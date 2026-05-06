@@ -48,7 +48,18 @@ def export_to_csv(runs: List[JobRun]) -> str:
 
 
 def export_runs(runs: List[JobRun], fmt: str) -> str:
-    """Export runs in the specified format ('json' or 'csv')."""
+    """Export runs in the specified format ('json' or 'csv').
+
+    Args:
+        runs: List of JobRun objects to export.
+        fmt: Output format, either 'json' or 'csv' (case-insensitive).
+
+    Returns:
+        A string containing the serialized run data.
+
+    Raises:
+        ValueError: If *fmt* is not a supported format.
+    """
     fmt = fmt.lower()
     if fmt == "json":
         return export_to_json(runs)
