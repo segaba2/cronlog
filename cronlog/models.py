@@ -41,6 +41,14 @@ class JobRun:
         ).total_seconds()
         self.status = JobStatus.SUCCESS if exit_code == 0 else JobStatus.FAILURE
 
+    def mark_timeout(self) -> None:
+        """Mark the job run as timed out and compute duration up to this point."""
+        self.finished_at = datetime.utcnow()
+        self.duration_seconds = (
+            self.finished_at - self.started_at
+        ).total_seconds()
+        self.status = JobStatus.TIMEOUT
+
     def to_dict(self) -> dict:
         """Serialize the job run to a plain dictionary."""
         return {
