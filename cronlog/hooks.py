@@ -41,6 +41,18 @@ def run_post_hooks(run: JobRun) -> None:
             pass
 
 
+def get_hook_counts() -> dict:
+    """Return the number of registered pre- and post-hooks.
+
+    Useful for diagnostics and testing to confirm hook registration state
+    without exposing the internal lists directly.
+
+    Returns:
+        A dict with keys 'pre' and 'post' mapping to their respective counts.
+    """
+    return {"pre": len(_pre_hooks), "post": len(_post_hooks)}
+
+
 def logging_pre_hook(run: JobRun) -> None:
     """Built-in pre-hook that prints a start message."""
     print(f"[cronlog] Starting job: {run.job_name} (run_id={run.run_id})")
