@@ -44,7 +44,13 @@ class JobRunQuery:
         return latest_per_job(self._storage.load_all())
 
     def get(self, run_id: str) -> Optional[JobRun]:
-        """Retrieve a single run by its ID."""
+        """Retrieve a single run by its ID.
+
+        Raises:
+            ValueError: If *run_id* is empty or whitespace.
+        """
+        if not run_id or not run_id.strip():
+            raise ValueError("run_id must be a non-empty string")
         for run in self._storage.load_all():
             if run.run_id == run_id:
                 return run
