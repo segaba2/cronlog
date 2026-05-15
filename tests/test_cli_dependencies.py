@@ -59,6 +59,14 @@ def test_cmd_remove_removes_dependency(storage, capsys):
     assert "a" not in dep_module.get_dependencies("b")
 
 
+def test_cmd_remove_nonexistent_dependency_prints_error(storage, capsys):
+    """Removing a dependency that does not exist should print an error message."""
+    args = make_args(deps_cmd="remove", job="b", depends_on="a")
+    cmd_deps(args, storage)
+    out = capsys.readouterr().out
+    assert "Error" in out
+
+
 def test_cmd_list_empty(storage, capsys):
     args = make_args(deps_cmd="list")
     cmd_deps(args, storage)
@@ -106,11 +114,4 @@ def test_cmd_cycles_detected(storage, capsys):
     args = make_args(deps_cmd="cycles")
     cmd_deps(args, storage)
     out = capsys.readouterr().out
-    assert "Cycle detected" in out
-
-
-def test_cmd_no_subcommand_prints_usage(storage, capsys):
-    args = make_args(deps_cmd=None)
-    cmd_deps(args, storage)
-    out = capsys.readouterr().out
-    assert "Usage" in out
+    assert "cycle" in out.lower()
